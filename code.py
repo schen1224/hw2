@@ -1,19 +1,23 @@
 import urllib.request
+import string
 
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
+# # transform txt into list:
+# memories = open('memories.txt')
+# memories_list = []
+# for line in memories:
+#     memories_list.append(line.strip())
+# # print(memories_list)
 
-# transform txt into list:
-memories = open('memories.txt')
-memories_list = []
-for line in memories:
-    memories_list.append(line.strip())
-# print(memories_list)
+# adventures = open('adventures.txt')
+# adventures = []
+# for line in adventures:
+#     adventures.append(line.strip())
 
-adventures = open('adventures.txt')
-adventures = []
-for line in adventures:
-    adventures.append(line.strip())
+stop_words = open('stopwords.txt')
+stop_words_list = []
+for line in stop_words:
+    stop_words_list.append(line.strip())
 
 # Get the actual content:
 
@@ -51,7 +55,7 @@ def process_file(filename, skip_header):
             word = word.strip(strippables)
             word = word.lower()
 
-            if word in memories_list:
+            if word in stop_words_list:
                 continue
             else:
                 book[word] = book.get(word, 0) + 1
@@ -134,3 +138,32 @@ def compare_top_10_overlapping(book_1, book_2):
     return list_overlapping
 
 # Natural Language Processing:
+
+def main():
+    # please keep the following four lines of code UN-commented when running the main function
+    adv = process_file('adventures.txt', skip_header=True)
+    memo = process_file('memories.txt', skip_header=True)
+    # nltk_Smith = open('An Inquiry into the Nature and Causes of the Wealth of Nations.txt', 'r', encoding='utf-8').read()
+    # nltk_Hamilton = open('The Federalist Papers.txt', 'r', encoding='utf-8').read()
+
+
+    print(f'top ten words appeared in Adventures : {top_10_words(adv)}')
+    print(f'top ten words appeared in memories: {top_10_words(memo)}')
+
+    # print(f'The difference between Smith\'s book and Hamilton\'s book is: {compare_top_10(book_Smith, book_Hamilton)}')
+
+    # print(f'The Score for sentiment analysis for Smith\'s book is {sentiment_analysis(nltk_Smith)}')
+    # print(f'The Score for sentiment analysis for Hamilton\'s book is {sentiment_analysis(nltk_Hamilton)}')
+
+    # print(f'The difference in score between Smith\'s book and Hamilton\'s book is {compare_sentiment_analysis(nltk_Smith, nltk_Hamilton)}')
+
+    # print(plot(nltk_Smith))
+    # plt.savefig('Smith.png')
+
+    # print(plot(nltk_Hamilton))
+    # plt.savefig('Hamilton.png')
+
+    print(f'The Jaccard Similarity Score between the two books is {jaccard_similarity(nltk_Smith, nltk_Hamilton): 0.5f}')
+
+if __name__ == "__main__":
+    main()
