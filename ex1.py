@@ -3,13 +3,18 @@ import string
 import sys
 from unicodedata import category
 from thefuzz import fuzz
+from thefuzz import process
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
 
 # Part 1: Cleaning file
-
+'''
+The following function: process_file and skip_header are from the analyze_book homework.
+But I modified both functions for them to be suitable for this project and I did not copy and paste the code. 
+'''
 def process_file(filename, skip_header):
     """
-    skip_header: boolean, whether to skip the Gutenberg header
-    returns: map from each word to the number of times it appears.
+    This function process the book to make sure the content used in later functions does not include irrelevant information, such as a header.
     """
     book = {}
     fp = open(filename, encoding='utf8')
@@ -31,16 +36,11 @@ def process_file(filename, skip_header):
         line = line.replace('-', ' ')
         line = line.replace(
             chr(8212), ' '
-        )  # Unicode 8212 is the HTML decimal entity for em dash
-
+        )  
         for word in line.split():
-            # remove punctuation and convert to lowercase
             word = word.strip(strippables)
             word = word.lower()
-
-            # update the histogram
             book[word] = book.get(word, 0) + 1
-
     return book
 
 
@@ -132,29 +132,33 @@ def compare_top_10_overlapping(book_1, book_2):
     return list_overlapping
 
 # Part 3: Natural Language Processing
+def get_sentiment(book):
+    score = SentimentIntensityAnalyzer().polarity_scores(book)
+    return score
 
 # Part 4: Text Similarity
 def text_similarity(book1,book2):
-    print(fuzz.ratio(book1,book2))
+    result=(fuzz.ratio(book1,book2))
+    return result
 
-# Part 5: Text Clustering
+
 def main():
     adv = process_file('adventures.txt', skip_header=True)
     ret= process_file('The Return of Sherlock Holmes.txt', skip_header=True)
+    adv_nltk = open('adventures.txt', 'r', encoding='utf-8').read()
+    ret_nltk = open('The Return of Sherlock Holmes.txt', 'r', encoding='utf-8').read()
 
     # print(f'The total words in Adventures are {total_words(adv)}')
     # print(f'The total words in The Return of Sherlock Holmes are {total_words(ret)}')
-    # print(f'The top 10 words in Adventures are:{top_10_words(adv)}')
-    # print(f'The top 10 words in The Return of Sherlock Holmes are:{top_10_words(ret)}')
-    # print(f'The non overlapping words in the top 10 common words in two books are:{compare_top_10_nonoverlapping(adv, ret)}')
-    # print(f'The overlapping words in the top 10 common words in two books are:{compare_top_10_overlapping(adv, ret)}')
+    print(f'The top 10 words in Adventures are:{top_10_words(adv)}')
+    print(f'The top 10 words in The Return of Sherlock Holmes are:{top_10_words(ret)}')
+    print(f'The non overlapping words in the top 10 common words in two books are:{compare_top_10_nonoverlapping(adv, ret)}')
+    print(f'The overlapping words in the top 10 common words in two books are:{compare_top_10_overlapping(adv, ret)}')
 
-    print(f'The text similarity based in the fuzz ratio is {text_similarity(adv,ret)}%')
-
-
-
-
-
+    # print(f'The sentiment analysis result of Adventures is{get_sentiment(adv_nltk)}')
+    # print(f'The sentiment analysis result of The Return of Sherlock Holmes is{get_sentiment(ret_nltk)}')
+    # print(f'The text similarity based in the fuzz ratio is {text_similarity(adv,ret)}%')
+    
 
 if __name__ == '__main__':
     main()
