@@ -148,12 +148,12 @@ def main():
     adv_nltk = open('adventures.txt', 'r', encoding='utf-8').read()
     ret_nltk = open('The Return of Sherlock Holmes.txt', 'r', encoding='utf-8').read()
 
-    # print(f'The total words in Adventures are {total_words(adv)}')
-    # print(f'The total words in The Return of Sherlock Holmes are {total_words(ret)}')
-    print(f'The top 10 words in Adventures are:{top_10_words(adv)}')
-    print(f'The top 10 words in The Return of Sherlock Holmes are:{top_10_words(ret)}')
-    print(f'The non overlapping words in the top 10 common words in two books are:{compare_top_10_nonoverlapping(adv, ret)}')
-    print(f'The overlapping words in the top 10 common words in two books are:{compare_top_10_overlapping(adv, ret)}')
+    print(f'The total words in Adventures are {total_words(adv)}')
+    print(f'The total words in The Return of Sherlock Holmes are {total_words(ret)}')
+    # print(f'The top 10 words in Adventures are:{top_10_words(adv)}')
+    # print(f'The top 10 words in The Return of Sherlock Holmes are:{top_10_words(ret)}')
+    # print(f'The non overlapping words in the top 10 common words in two books are:{compare_top_10_nonoverlapping(adv, ret)}')
+    # print(f'The overlapping words in the top 10 common words in two books are:{compare_top_10_overlapping(adv, ret)}')
 
     # print(f'The sentiment analysis result of Adventures is{get_sentiment(adv_nltk)}')
     # print(f'The sentiment analysis result of The Return of Sherlock Holmes is{get_sentiment(ret_nltk)}')
